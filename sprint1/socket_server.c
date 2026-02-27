@@ -46,6 +46,8 @@ int main()
 		perror("listen failed");
 		exit(EXIT_FAILURE);
 	}
+	printf("Server listening on port %d...\n", REMOTE_SERVER_PORT);
+	fflush(stdout);
 	while (1)
 	{
 		client_socket = accept(server_socket, (struct sockaddr *)&client_addr,

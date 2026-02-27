@@ -6,10 +6,10 @@
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <unistd.h>
 #endif
 #include <string.h>
 #include <stdio.h>
-// #include <unistd.h>
 #include <stdlib.h>
 #define REMOTE_SERVER_IP "0.0.0.0"
 #define REMOTE_SERVER_PORT 5000
@@ -34,7 +34,7 @@ int main()
 	server_addr.sin_port = htons(REMOTE_SERVER_PORT);
 	inet_pton(AF_INET, REMOTE_SERVER_IP, &server_addr.sin_addr);
 	// connect to server
-	if (connect(local_socket, (struct sockaddr_in *)&server_addr, sizeof(server_addr)) < 0)
+	if (connect(local_socket, (struct sockaddr *)&server_addr, sizeof(server_addr)) < 0)
 	{
 		perror("connection failed");
 		exit(EXIT_FAILURE);

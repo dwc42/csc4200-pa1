@@ -58,13 +58,18 @@ int main()
 			exit(EXIT_FAILURE);
 		}
 		int bytes = recv(client_socket, buffer, BUFFER_SIZE - 1, 0);
-		if (bytes < 0)
+		if (bytes == 0)
+		{
+			perror("client disconnected");
+			exit(EXIT_FAILURE);
+		}
+		else if (bytes < 0)
 		{
 			perror("receive failed");
 			exit(EXIT_FAILURE);
 		}
 		buffer[bytes] = '\0';
-		printf("Message from Client: %s\n", buffer);
+		printf("Message from Client: %s, %d bytes\n", buffer, strlen(bytes) - 1);
 		char reply[BUFFER_SIZE + 16];
 		snprintf(reply, sizeof(reply), "You sent: %s", buffer);
 		if (send(client_socket, reply, strlen(reply), 0) < 0)

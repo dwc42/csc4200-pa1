@@ -47,7 +47,7 @@ int main()
 		close(local_socket);
 		exit(EXIT_FAILURE);
 	}
-	printf("Message sent to server: \"%s\", %d bytes\n", message, strlen(message) - 1);
+	printf("Message sent to server: \"%s\", %d bytes\n", message, strlen(message));
 	int bytes = recv(local_socket, buffer, BUFFER_SIZE - 1, 0);
 	if (bytes < 0)
 	{

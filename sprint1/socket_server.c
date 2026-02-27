@@ -77,7 +77,7 @@ int main()
 			perror("reply send failed");
 			exit(EXIT_FAILURE);
 		};
-		printf("Returned Message to client: \"%s\", %d bytes\n", reply, strlen(reply) - 1);
+		printf("Returned Message to client: \"%s\", %d bytes\n", reply, strlen(reply));
 	}
 }
 

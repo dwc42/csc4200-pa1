@@ -40,16 +40,15 @@ int main()
 		perror("bind failed");
 		exit(EXIT_FAILURE);
 	};
+	// listen for clients
+	if (listen(server_socket, BACKLOG_SIZE) < 0)
+	{
+		perror("listen failed");
+		exit(EXIT_FAILURE);
+	}
 	while (1)
 	{
-
-		// listen for clients
-		if (listen(server_socket, BACKLOG_SIZE) < 0)
-		{
-			perror("connection failed");
-			exit(EXIT_FAILURE);
-		}
-		client_socket = accept(server_socket, (struct sockaddr *)&client_addr_len,
+		client_socket = accept(server_socket, (struct sockaddr *)&client_addr,
 							   &client_addr_len);
 		if (client_socket < 0)
 		{
@@ -64,12 +63,8 @@ int main()
 		}
 		buffer[bytes] = '\0';
 		printf("Message from Client: %s\n", buffer);
-		char *reply = strcat("You sent: ", buffer);
-		if (reply == NULL)
-		{
-			perror("reply concat failed");
-			exit(EXIT_FAILURE);
-		}
+		char reply[BUFFER_SIZE + 16];
+		snprintf(reply, sizeof(reply), "You sent: %s", buffer);
 		if (send(client_socket, reply, strlen(reply), 0) < 0)
 		{
 			perror("reply send failed");

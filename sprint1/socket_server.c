@@ -34,7 +34,7 @@ int main()
 	memset(&server_addr, 0, sizeof(server_addr));
 	server_addr.sin_family = AF_INET;
 	server_addr.sin_port = htons(REMOTE_SERVER_PORT);
-	if (bind(server_socket, &server_addr, sizeof(struct sockaddr_in)) < 0)
+	if (bind(server_socket, (struct sockaddr *)&server_addr, sizeof(struct sockaddr_in)) < 0)
 	{
 		perror("bind failed");
 		exit(EXIT_FAILURE);

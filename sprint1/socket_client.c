@@ -55,7 +55,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	buffer[bytes] = '\0';
-	printf("Response from server: %s, %d bytes\n", buffer, strlen(bytes) - 1);
+	printf("Response from server: %s, %d bytes\n", buffer, bytes);
 	close(local_socket);
 	printf("Success: completed\n");
 	exit(EXIT_SUCCESS);

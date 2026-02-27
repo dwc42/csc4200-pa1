@@ -69,7 +69,7 @@ int main()
 			exit(EXIT_FAILURE);
 		}
 		buffer[bytes] = '\0';
-		printf("Message from Client: %s, %d bytes\n", buffer, strlen(bytes) - 1);
+		printf("Message from Client: %s, %d bytes\n", buffer, bytes);
 		char reply[BUFFER_SIZE + 16];
 		snprintf(reply, sizeof(reply), "You sent: %s", buffer);
 		if (send(client_socket, reply, strlen(reply), 0) < 0)
@@ -77,6 +77,7 @@ int main()
 			perror("reply send failed");
 			exit(EXIT_FAILURE);
 		};
+		printf("Returned Message to client: %s, %d bytes\n", buffer, bytes);
 	}
 }
 

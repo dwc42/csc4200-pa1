@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-#define REMOTE_SERVER_IP "0.0.0.0"
+#define REMOTE_SERVER_IP "34.9.45.67"
 #define REMOTE_SERVER_PORT 5000
 #define BUFFER_SIZE 256
 int main()

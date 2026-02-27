@@ -12,7 +12,7 @@
 #include <stdio.h>
 // #include <unistd.h>
 #include <stdlib.h>
-#define REMOTE_SERVER_IP "0.0.0.0"
+#define REMOTE_SERVER_IP "10.128.0.3"
 #define REMOTE_SERVER_PORT 5000
 #define BUFFER_SIZE 256
 #define BACKLOG_SIZE 5

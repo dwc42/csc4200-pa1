@@ -123,7 +123,13 @@ int sendPacketFloat(int socket, PacketFloat *packetFloat)
 {
 	Packet packet;
 	packet.header = packetFloat->header;
+	packet.header.messageLength = sizeof(float);
 	packet.payload = malloc(sizeof(float));
+	if (packet.payload == NULL)
+	{
+		perror("malloc failed");
+		return -1;
+	}
 	memcpy(packet.payload, &packetFloat->payload, sizeof(float));
 	int output = sendPacket(socket, &packet);
 	freePacket(&packet);

@@ -125,8 +125,9 @@ int sendPacketFloat(int socket, PacketFloat *packetFloat)
 	packet.header = packetFloat->header;
 	packet.payload = malloc(sizeof(float));
 	memcpy(packet.payload, &packetFloat->payload, sizeof(float));
-	sendPacket(socket, &packet);
+	int output = sendPacket(socket, &packet);
 	freePacket(&packet);
+	return output;
 }
 PacketFloat receivePacketFloat(int socket)
 {
@@ -135,6 +136,7 @@ PacketFloat receivePacketFloat(int socket)
 	packet.header = packet.header;
 	memcpy(&packetFloat.payload, packet.payload, sizeof(float));
 	freePacket(&packet);
+	return packetFloat;
 }
 void freePacket(Packet *packet)
 {

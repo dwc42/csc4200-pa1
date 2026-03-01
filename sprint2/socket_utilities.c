@@ -49,7 +49,7 @@ int sendPacket(int socket, Packet *packet)
 			bigBuffer = 0;
 			memcpy(&bigBuffer, packet->payload + startOfChunk, bytes);
 			bigBuffer = htonl(bigBuffer);
-			memcpy(sendBuffer + startOfChunk % PAYLOAD_CHUNK_SIZE, &bigBuffer, bytes);
+			memcpy(sendBuffer + startOfChunk % PAYLOAD_CHUNK_SIZE, &bigBuffer, 4);
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1 || i == header.messageLength - 1)
 			{
 				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
@@ -111,7 +111,7 @@ Packet receivePacket(int socket)
 		{
 			unsigned startOfChunk = (i / 4) * 4;
 			unsigned bytes = i - startOfChunk + 1;
-			memcpy(&littleBuffer, buffer + startOfChunk % PAYLOAD_CHUNK_SIZE, bytes);
+			memcpy(&littleBuffer, buffer + startOfChunk % PAYLOAD_CHUNK_SIZE, 4);
 			littleBuffer = ntohl(littleBuffer);
 			memcpy(packet.payload + startOfChunk, &littleBuffer, bytes);
 		}

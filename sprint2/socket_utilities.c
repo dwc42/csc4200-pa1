@@ -45,7 +45,7 @@ int sendPacket(int socket, Packet *packet)
 		{
 			memcpy(&bigBuffer, ptr, fmin(4, i - header.messageLength - 1));
 			bigBuffer = htonl(bigBuffer);
-			memcpy(sendBuffer + (i % 3) * 4, &bigBuffer, fmin(4, i - header.messageLength - 1));
+			memcpy(sendBuffer + (i % 3) * 4, &bigBuffer, fmin(4, header.messageLength - i));
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1)
 			{
 				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
@@ -99,9 +99,9 @@ Packet receivePacket(int socket)
 		if (((i % 4) == 3) || i == packet.header.messageLength - 1)
 		{
 
-			memcpy(&littleBuffer, receiveBuffer, fmin(4, i - packet.header.messageLength - 1));
+			memcpy(&littleBuffer, receiveBuffer, fmin(4, packet.header.messageLength - i));
 			littleBuffer = ntohl(littleBuffer);
-			memcpy(outputBuffer, &littleBuffer, fmin(4, i - packet.header.messageLength - 1));
+			memcpy(outputBuffer, &littleBuffer, fmin(4, packet.header.messageLength - i));
 		}
 	}
 }

@@ -1,5 +1,23 @@
 #include "socket_utilities.h"
 #include "math.h"
+void validateReceiveBytes(unsigned bytes)
+{
+	if (bytes == 0)
+	{
+		perror("disconnected");
+		exit(EXIT_FAILURE);
+	}
+	else if (bytes < 0)
+	{
+		perror("receive failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (bytes != PAYLOAD_CHUNK_SIZE)
+	{
+		perror("header chunk not correct size");
+		exit(EXIT_FAILURE);
+	}
+}
 int sendPacket(int socket, Packet *packet)
 {
 	PacketHeader header = packet->header;
@@ -85,24 +103,5 @@ Packet receivePacket(int socket)
 			bigBuffer = ntohl(bigBuffer);
 			memcpy(&outputBuffer, &bigBuffer, fmin(4, i - packet.header.messageLength - 1));
 		}
-	}
-}
-
-void validateReceiveBytes(unsigned bytes)
-{
-	if (bytes == 0)
-	{
-		perror("disconnected");
-		exit(EXIT_FAILURE);
-	}
-	else if (bytes < 0)
-	{
-		perror("receive failed");
-		exit(EXIT_FAILURE);
-	}
-	else if (bytes != PAYLOAD_CHUNK_SIZE)
-	{
-		perror("header chunk not correct size");
-		exit(EXIT_FAILURE);
 	}
 }

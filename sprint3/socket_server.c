@@ -74,7 +74,7 @@ int main()
 			   packetFromClient.payload);
 		if (sendPacketFloat(client_socket, &packetFromClient) < 0)
 		{
-			freePacket(&packetFromClient);
+			// freePacket(&packetFromClient);
 			perror("return packet send failed");
 			exit(EXIT_FAILURE);
 		};

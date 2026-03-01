@@ -40,14 +40,17 @@ int sendPacket(int socket, Packet *packet)
 	memset(sendBuffer, 0, PAYLOAD_CHUNK_SIZE);
 	unsigned bigBuffer;
 	char *ptr = packet->payload;
-	for (unsigned i = 0; i < header.messageLength; i++, ptr++)
+	for (unsigned i = 0; i < header.messageLength; i++)
 	{
 		if (((i % 4) == 3) || i == header.messageLength - 1)
 		{
-			memcpy(&bigBuffer, ptr, fmin(4, header.messageLength - i));
+			unsigned startOfChunk = (i / 4) * 4;
+			unsigned bytes = i - startOfChunk + 1;
+			bigBuffer = 0;
+			memcpy(&bigBuffer, packet->payload + startOfChunk, bytes);
 			bigBuffer = htonl(bigBuffer);
-			memcpy(sendBuffer + (i % 3) * 4, &bigBuffer, fmin(4, header.messageLength - i));
-			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1)
+			memcpy(sendBuffer + startOfChunk % PAYLOAD_CHUNK_SIZE, &bigBuffer, bytes);
+			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1 || i == header.messageLength - 1)
 			{
 				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
 				{
@@ -106,10 +109,11 @@ Packet receivePacket(int socket)
 		}
 		if (((i % 4) == 3) || i == packet.header.messageLength - 1)
 		{
-
-			memcpy(&littleBuffer, buffer + (i % 3) * 4, fmin(4, packet.header.messageLength - i));
+			unsigned startOfChunk = (i / 4) * 4;
+			unsigned bytes = i - startOfChunk + 1;
+			memcpy(&littleBuffer, buffer + startOfChunk % PAYLOAD_CHUNK_SIZE, bytes);
 			littleBuffer = ntohl(littleBuffer);
-			memcpy(packet.payload + (unsigned)((i / 4) * 4), &littleBuffer, fmin(4, packet.header.messageLength - i));
+			memcpy(packet.payload + startOfChunk, &littleBuffer, bytes);
 		}
 	}
 	packet.payload[packet.header.messageLength] = '\0';

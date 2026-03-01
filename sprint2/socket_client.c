@@ -47,7 +47,7 @@ int main()
 	Packet packet;
 	packet.header.version = PROTOCOL_NUMBER;
 	packet.header.messageType = MESSAGE_TYPE;
-	packet.header.messageLength = strlen(message);
+	packet.header.messageLength = 0; // strlen(message);
 	packet.payload = message;
 	if (sendPacket(server_socket, &packet) < 0)
 	{

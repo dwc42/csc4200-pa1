@@ -43,7 +43,7 @@ int main()
 		exit(EXIT_FAILURE);
 	}
 	printf("Success: Connected to server at %s:%d\n", REMOTE_SERVER_IP, REMOTE_SERVER_PORT);
-	char *message = "hello server";
+	char *message = "The shift() method shifts all values to the left by 1 and decrements the length by 1, resulting in the first element being removed.If the length property is 0, undefined is returned.       The pop() method has similar behavior to shift(),    but applied to the last element in an array.       The shift() method is a mutating method.It changes the length and the content of this.In case you want the value of this to be the same,    but return a new array with the first element removed, you can use arr.slice(1) instead.       The shift() method is generic.It only expects the this value to have a length property and integer    - keyed properties.Although strings are also array - like,    this method is not suitable to be applied on them, as strings are immutable.";
 	Packet packet;
 	packet.header.version = PROTOCOL_NUMBER;
 	packet.header.messageType = MESSAGE_TYPE;

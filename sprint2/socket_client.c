@@ -72,7 +72,6 @@ int main()
 		   packetFromServer.header.messageType,
 		   packetFromServer.header.messageLength,
 		   packetFromServer.payload);
-	freePacket(&packet);
 	freePacket(&packetFromServer);
 	close(server_socket);
 	printf("Success: completed\n");

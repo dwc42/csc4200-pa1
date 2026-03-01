@@ -62,7 +62,7 @@ int main()
 	PacketFloat packetFromServer = receivePacketFloat(server_socket);
 	// char *equal = strcmp(packet.payload, packetFromServer.payload) == 0 ? "yes" : "no";
 	char *equal = packet.payload == packetFromServer.payload ? "yes" : "no";
-	printf("packet received from server: equal?: %f, (header: (version: %u, type: %u, length: %u), payload: %f)\n",
+	printf("packet received from server: equal?: %s, (header: (version: %u, type: %u, length: %u), payload: %f)\n",
 		   equal,
 		   packetFromServer.header.version,
 		   packetFromServer.header.messageType,

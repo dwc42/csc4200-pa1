@@ -66,7 +66,7 @@ Packet receivePacket(int socket)
 {
 	char buffer[PAYLOAD_CHUNK_SIZE + 1];
 
-	int bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, 0);
+	int bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, MSG_WAITALL);
 	validateReceiveBytes(bytes);
 	Packet packet;
 	int i = 0;
@@ -104,7 +104,7 @@ Packet receivePacket(int socket)
 	{
 		if (!(i % PAYLOAD_CHUNK_SIZE))
 		{
-			bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, 0);
+			bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, MSG_WAITALL);
 			validateReceiveBytes(bytes);
 		}
 		if (((i % 4) == 3) || i == packet.header.messageLength - 1)

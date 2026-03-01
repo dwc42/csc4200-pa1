@@ -32,4 +32,5 @@ typedef struct Packet
 } Packet;
 int sendPacket(int socket, Packet *packet);
 Packet receivePacket(int socket);
+void freePacket(Packet *packet);
 #endif

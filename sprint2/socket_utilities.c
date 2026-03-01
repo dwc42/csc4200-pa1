@@ -119,3 +119,10 @@ Packet receivePacket(int socket)
 	packet.payload[packet.header.messageLength] = '\0';
 	return packet;
 }
+
+void freePacket(Packet *packet)
+{
+	if (packet->payload == NULL)
+		return;
+	free(packet->payload);
+}

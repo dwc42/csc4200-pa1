@@ -74,9 +74,11 @@ int main()
 			   packetFromClient.payload);
 		if (sendPacket(client_socket, &packetFromClient) < 0)
 		{
+			freePacket(&packetFromClient);
 			perror("return packet send failed");
 			exit(EXIT_FAILURE);
 		};
+		freePacket(&packetFromClient);
 	}
 }
 

@@ -17,7 +17,7 @@
 
 #define PROTOCOL_NUMBER 17
 #define MESSAGE_TYPE 1
-#define PAYLOAD_CHUNK_SIZE 3
+#define PAYLOAD_CHUNK_SIZE 12
 
 typedef struct PacketHeader
 {

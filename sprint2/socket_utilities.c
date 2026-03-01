@@ -37,6 +37,7 @@ int sendPacket(int socket, Packet *packet)
 		return -1;
 	}
 	char sendBuffer[PAYLOAD_CHUNK_SIZE];
+	memset(sendBuffer, 0, PAYLOAD_CHUNK_SIZE);
 	unsigned bigBuffer;
 	char *ptr = packet->payload;
 	for (unsigned i = 0; i < header.messageLength; i++, ptr++)
@@ -86,22 +87,26 @@ Packet receivePacket(int socket)
 		perror("incorrect protocol version");
 		exit(EXIT_FAILURE);
 	}
-	char *receiveBuffer;
-	char *outputBuffer;
-	for (unsigned i = 0; i < packet.header.messageLength; i++, outputBuffer++, receiveBuffer++)
+	packet.payload = malloc(packet.header.messageLength + 1);
+	if (!packet.payload)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+	for (unsigned i = 0; i < packet.header.messageLength; i++)
 	{
 		if (!(i % PAYLOAD_CHUNK_SIZE))
 		{
 			bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, 0);
 			validateReceiveBytes(bytes);
-			receiveBuffer = &buffer;
 		}
 		if (((i % 4) == 3) || i == packet.header.messageLength - 1)
 		{
 
-			memcpy(&littleBuffer, receiveBuffer, fmin(4, packet.header.messageLength - i));
+			memcpy(&littleBuffer, buffer + (i % 3) * 4, fmin(4, packet.header.messageLength - i));
 			littleBuffer = ntohl(littleBuffer);
-			memcpy(outputBuffer, &littleBuffer, fmin(4, packet.header.messageLength - i));
+			memcpy(packet.payload + (unsigned)((i / 4) * 4), &littleBuffer, fmin(4, packet.header.messageLength - i));
 		}
 	}
+	packet.payload[packet.header.messageLength] = '\0';
 }

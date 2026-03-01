@@ -47,7 +47,7 @@ int main()
 	PacketFloat packet;
 	packet.header.version = PROTOCOL_NUMBER;
 	packet.header.messageType = MESSAGE_TYPE;
-	packet.header.messageLength = 0; // strlen(message);
+	packet.header.messageLength = sizeof(float); // strlen(message);
 	packet.payload = 4.36763f;
 	if (sendPacketFloat(server_socket, &packet) < 0)
 	{

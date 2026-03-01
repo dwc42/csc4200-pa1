@@ -133,7 +133,7 @@ PacketFloat receivePacketFloat(int socket)
 {
 	Packet packet = receivePacket(socket);
 	PacketFloat packetFloat;
-	packet.header = packet.header;
+	packetFloat.header = packet.header;
 	memcpy(&packetFloat.payload, packet.payload, sizeof(float));
 	freePacket(&packet);
 	return packetFloat;

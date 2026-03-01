@@ -26,11 +26,11 @@ int sendPacket(int socket, Packet *packet)
 	int i = 0;
 	unsigned temp;
 	temp = htonl(header.version);
-	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 	temp = htonl(header.messageType);
-	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 	temp = htonl(header.messageLength);
-	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 
 	if (send(socket, sendHeaderBuffer, sizeof(sendHeaderBuffer), 0) < 0)
 	{
@@ -45,7 +45,7 @@ int sendPacket(int socket, Packet *packet)
 		{
 			memcpy(&bigBuffer, ptr, fmin(4, i - header.messageLength - 1));
 			bigBuffer = htonl(bigBuffer);
-			memcpy(&sendBuffer + (i % 4) * 4, &bigBuffer, fmin(4, i - header.messageLength - 1));
+			memcpy(sendBuffer + (i % 4) * 4, &bigBuffer, fmin(4, i - header.messageLength - 1));
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1)
 			{
 				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
@@ -64,7 +64,6 @@ Packet receivePacket(int socket)
 	int bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, 0);
 	validateReceiveBytes(bytes);
 	Packet packet;
-	unsigned bigBuffer;
 	int i = 0;
 
 	unsigned temp;
@@ -100,8 +99,8 @@ Packet receivePacket(int socket)
 		{
 
 			memcpy(&littleBuffer, receiveBuffer, fmin(4, i - packet.header.messageLength - 1));
-			bigBuffer = ntohl(bigBuffer);
-			memcpy(&outputBuffer, &bigBuffer, fmin(4, i - packet.header.messageLength - 1));
+			littleBuffer = ntohl(littleBuffer);
+			memcpy(outputBuffer, &littleBuffer, fmin(4, i - packet.header.messageLength - 1));
 		}
 	}
 }

@@ -45,13 +45,14 @@ int sendPacket(int socket, Packet *packet)
 		{
 			memcpy(&bigBuffer, ptr, fmin(4, i - header.messageLength - 1));
 			bigBuffer = htonl(bigBuffer);
-			memcpy(sendBuffer + (i % 4) * 4, &bigBuffer, fmin(4, i - header.messageLength - 1));
+			memcpy(sendBuffer + (i % 3) * 4, &bigBuffer, fmin(4, i - header.messageLength - 1));
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1)
 			{
 				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
 				{
 					return -1;
 				}
+				memset(sendBuffer, 0, PAYLOAD_CHUNK_SIZE);
 			}
 		}
 	}

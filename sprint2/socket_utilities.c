@@ -43,7 +43,7 @@ int sendPacket(int socket, Packet *packet)
 	{
 		if (((i % 4) == 3) || i == header.messageLength - 1)
 		{
-			memcpy(&bigBuffer, ptr, fmin(4, i - header.messageLength - 1));
+			memcpy(&bigBuffer, ptr, fmin(4, header.messageLength - i));
 			bigBuffer = htonl(bigBuffer);
 			memcpy(sendBuffer + (i % 3) * 4, &bigBuffer, fmin(4, header.messageLength - i));
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1)

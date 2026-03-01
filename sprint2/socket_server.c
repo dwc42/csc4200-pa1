@@ -71,7 +71,7 @@ int main()
 			   packetFromClient.header.version,
 			   packetFromClient.header.messageType,
 			   packetFromClient.header.messageLength,
-			   packetFromClient.header);
+			   packetFromClient.payload);
 		if (sendPacket(client_socket, &packetFromClient) < 0)
 		{
 			perror("return packet send failed");

@@ -58,7 +58,7 @@ int main()
 		   packet.header.version,
 		   packet.header.messageType,
 		   packet.header.messageLength,
-		   packet.header);
+		   packet.payload);
 	Packet packetFromServer = receivePacket(server_socket);
 	if (packetFromServer.payload == NULL)
 	{
@@ -69,7 +69,7 @@ int main()
 		   packetFromServer.header.version,
 		   packetFromServer.header.messageType,
 		   packetFromServer.header.messageLength,
-		   packetFromServer.header);
+		   packetFromServer.payload);
 
 	close(server_socket);
 	printf("Success: completed\n");

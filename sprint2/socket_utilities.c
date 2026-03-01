@@ -69,11 +69,11 @@ Packet receivePacket(int socket)
 	int i = 0;
 
 	unsigned temp;
-	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	memcpy(&temp, buffer + (i++ * 4), sizeof(unsigned));
 	packet.header.version = ntohl(temp);
-	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	memcpy(&temp, buffer + (i++ * 4), sizeof(unsigned));
 	packet.header.messageType = ntohl(temp);
-	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	memcpy(&temp, buffer + (i++ * 4), sizeof(unsigned));
 	packet.header.messageLength = ntohl(temp);
 
 	unsigned littleBuffer;
@@ -113,4 +113,5 @@ Packet receivePacket(int socket)
 		}
 	}
 	packet.payload[packet.header.messageLength] = '\0';
+	return packet;
 }

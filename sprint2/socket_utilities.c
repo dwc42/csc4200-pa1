@@ -8,11 +8,11 @@ int sendPacket(int socket, Packet *packet)
 	int i = 0;
 	unsigned temp;
 	temp = htonl(header.version);
-	memcopy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 	temp = htonl(header.messageType);
-	memset(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 	temp = htonl(header.messageLength);
-	memset(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	memcpy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 
 	if (send(socket, sendHeaderBuffer, sizeof(sendHeaderBuffer), 0) < 0)
 	{

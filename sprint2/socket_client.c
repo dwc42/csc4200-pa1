@@ -65,7 +65,9 @@ int main()
 		perror("receive packet failed");
 		exit(EXIT_FAILURE);
 	}
-	printf("packet received from server: (header: (version: %u, type: %u, length: %u), payload: %s)\n",
+	char *equal = strcmp(packet.payload, packetFromServer.payload) == 0 ? "yes" : "no";
+	printf("packet received from server: equal?:%s, (header: (version: %u, type: %u, length: %u), payload: %s)\n",
+		   equal,
 		   packetFromServer.header.version,
 		   packetFromServer.header.messageType,
 		   packetFromServer.header.messageLength,

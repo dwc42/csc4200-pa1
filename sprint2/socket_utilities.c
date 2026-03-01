@@ -6,9 +6,13 @@ int sendPacket(int socket, Packet *packet)
 	char sendHeaderBuffer[PAYLOAD_CHUNK_SIZE];
 
 	int i = 0;
-	memset(&sendHeaderBuffer + i++ * 4, htonl(header.version), sizeof(unsigned));
-	memset(&sendHeaderBuffer + i++ * 4, htonl(header.messageType), sizeof(unsigned));
-	memset(&sendHeaderBuffer + i++ * 4, htonl(header.messageLength), sizeof(unsigned));
+	unsigned temp;
+	temp = htonl(header.version);
+	memcopy(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	temp = htonl(header.messageType);
+	memset(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
+	temp = htonl(header.messageLength);
+	memset(&sendHeaderBuffer + i++ * 4, &temp, sizeof(unsigned));
 
 	if (send(socket, sendHeaderBuffer, sizeof(sendHeaderBuffer), 0) < 0)
 	{
@@ -17,7 +21,7 @@ int sendPacket(int socket, Packet *packet)
 	char sendBuffer[PAYLOAD_CHUNK_SIZE];
 	unsigned bigBuffer;
 	char *ptr = packet->payload;
-	for (unsigned i = 0; i < header.messageLength; i++, *ptr++)
+	for (unsigned i = 0; i < header.messageLength; i++, ptr++)
 	{
 		if (((i % 4) == 3) || i == header.messageLength - 1)
 		{
@@ -45,9 +49,13 @@ Packet receivePacket(int socket)
 	unsigned bigBuffer;
 	int i = 0;
 
-	memset(&packet.header.version, ntohl(&buffer + (i++ * 4)), sizeof(unsigned));
-	memset(&packet.header.messageType, ntohl(&buffer + (i++ * 4)), sizeof(unsigned));
-	memset(&packet.header.messageLength, ntohl(&buffer + (i++ * 4)), sizeof(unsigned));
+	unsigned temp;
+	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	packet.header.version = ntohl(temp);
+	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	packet.header.messageType = ntohl(temp);
+	memcpy(&temp, &buffer + (i++ * 4), sizeof(unsigned));
+	packet.header.messageLength = ntohl(temp);
 
 	unsigned littleBuffer;
 	if (packet.header.messageType != MESSAGE_TYPE)

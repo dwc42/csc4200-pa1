@@ -77,7 +77,7 @@ Packet receivePacket(int socket)
 	packet.header.messageLength = ntohl(temp);
 
 	unsigned littleBuffer;
-	printf("header: (messageType: %u, protocol version: %u, length: %u)",
+	printf("header: (messageType: %u, protocol version: %u, length: %u)\n",
 		   packet.header.messageType,
 		   packet.header.version,
 		   packet.header.messageLength);

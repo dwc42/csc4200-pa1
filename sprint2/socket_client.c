@@ -54,7 +54,7 @@ int main()
 		perror("return packet send failed");
 		exit(EXIT_FAILURE);
 	};
-	printf("packet sent to server: (header: (version: %u, type: %u, length: %u), payload: %s)",
+	printf("packet sent to server: (header: (version: %u, type: %u, length: %u), payload: %s)\n",
 		   packet.header.version,
 		   packet.header.messageType,
 		   packet.header.messageLength,
@@ -65,7 +65,7 @@ int main()
 		perror("receive packet failed");
 		exit(EXIT_FAILURE);
 	}
-	printf("packet received from server: (header: (version: %u, type: %u, length: %u), payload: %s)",
+	printf("packet received from server: (header: (version: %u, type: %u, length: %u), payload: %s)\n",
 		   packetFromServer.header.version,
 		   packetFromServer.header.messageType,
 		   packetFromServer.header.messageLength,

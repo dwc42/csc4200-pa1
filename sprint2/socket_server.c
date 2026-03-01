@@ -67,7 +67,7 @@ int main()
 			perror("receive packet failed");
 			exit(EXIT_FAILURE);
 		}
-		printf("packet from client: (header: (version: %u, type: %u, length: %u), payload: %s)",
+		printf("packet from client: (header: (version: %u, type: %u, length: %u), payload: %s)\n",
 			   packetFromClient.header.version,
 			   packetFromClient.header.messageType,
 			   packetFromClient.header.messageLength,

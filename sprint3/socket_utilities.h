@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 #define PROTOCOL_NUMBER 17
-#define MESSAGE_TYPE 1
+#define MESSAGE_TYPE 2
 #define PAYLOAD_CHUNK_SIZE 12
 
 typedef struct PacketHeader

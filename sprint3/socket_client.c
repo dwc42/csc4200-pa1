@@ -17,8 +17,24 @@
 #define REMOTE_SERVER_IP "10.128.0.3"
 #define REMOTE_SERVER_PORT 5000
 #define BUFFER_SIZE 256
-int main()
+int main(int argCount, char *args[])
 {
+	if (argCount > 2)
+	{
+		perror("too many args passed");
+		exit(EXIT_FAILURE);
+	}
+	float num;
+	if (argCount == 2)
+	{
+		char *message = args[1];
+
+		num = (float)atof(message);
+	}
+	else
+	{
+		num = 4.347487f;
+	}
 	int server_socket;
 	struct sockaddr_in server_addr;
 	struct sockaddr_in local_addr;
@@ -48,7 +64,7 @@ int main()
 	packet.header.version = PROTOCOL_NUMBER;
 	packet.header.messageType = MESSAGE_TYPE;
 	packet.header.messageLength = sizeof(float); // strlen(message);
-	packet.payload = 4.36763f;
+	packet.payload = num;
 	if (sendPacketFloat(server_socket, &packet) < 0)
 	{
 		perror("return packet send failed");

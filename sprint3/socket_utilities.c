@@ -1,6 +1,6 @@
 #include "socket_utilities.h"
 #include "math.h"
-void validateReceiveBytes(unsigned bytes)
+void validateReceiveBytes(int bytes, unsigned expectedBytes)
 {
 	if (bytes == 0)
 	{
@@ -12,7 +12,7 @@ void validateReceiveBytes(unsigned bytes)
 		perror("receive failed");
 		exit(EXIT_FAILURE);
 	}
-	else if (bytes != PAYLOAD_CHUNK_SIZE)
+	else if (bytes != expectedBytes)
 	{
 		perror("header chunk not correct size");
 		exit(EXIT_FAILURE);
@@ -70,7 +70,7 @@ Packet receivePacket(int socket)
 	char buffer[PAYLOAD_CHUNK_SIZE + 1];
 
 	int bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, MSG_WAITALL);
-	validateReceiveBytes(bytes);
+	validateReceiveBytes(bytes, PAYLOAD_CHUNK_SIZE);
 	Packet packet;
 	int i = 0;
 
@@ -107,8 +107,13 @@ Packet receivePacket(int socket)
 	{
 		if (!(i % PAYLOAD_CHUNK_SIZE))
 		{
-			bytes = recv(socket, buffer, PAYLOAD_CHUNK_SIZE, MSG_WAITALL);
-			validateReceiveBytes(bytes);
+			unsigned startOf12ByteChunk = (i / 12) * 12;
+			unsigned bytes = (packet.header.messageLength - i > PAYLOAD_CHUNK_SIZE)
+								 ? PAYLOAD_CHUNK_SIZE
+								 : packet.header.messageLength - i;
+			unsigned expectedBytes = ((bytes + 3) / 4) * 4;
+			bytes = recv(socket, buffer, expectedBytes, MSG_WAITALL);
+			validateReceiveBytes(bytes, expectedBytes);
 		}
 		if (((i % 4) == 3) || i == packet.header.messageLength - 1)
 		{

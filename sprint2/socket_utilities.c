@@ -47,7 +47,8 @@ int sendPacket(int socket, Packet *packet)
 			unsigned startOfIntChunk = (i / 4) * 4;
 			unsigned startOf12ByteChunk = (i / 12) * 12;
 			unsigned bytes = i - startOfIntChunk + 1;
-			unsigned bytes12 = i - startOf12ByteChunk + 1;
+			//+4 rounds up as it was + 1 noe +1 +3 the plus 3 will round up. 0+3 would 0 + 1+3 is 4
+			unsigned bytes12 = (i - startOf12ByteChunk + 4) / 4 * 4;
 			bigBuffer = 0;
 			memcpy(&bigBuffer, packet->payload + startOfIntChunk, bytes);
 			bigBuffer = htonl(bigBuffer);

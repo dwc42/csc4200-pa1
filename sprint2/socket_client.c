@@ -31,7 +31,7 @@ int main(int argCount, char *args[])
 	}
 	else
 	{
-		message = "Hello Server";
+		message = "";
 	}
 
 	int server_socket;

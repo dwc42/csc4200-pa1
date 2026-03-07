@@ -44,15 +44,17 @@ int sendPacket(int socket, Packet *packet)
 	{
 		if (((i % 4) == 3) || i == header.messageLength - 1)
 		{
-			unsigned startOfChunk = (i / 4) * 4;
-			unsigned bytes = i - startOfChunk + 1;
+			unsigned startOfIntChunk = (i / 4) * 4;
+			unsigned startOf12ByteChunk = (i / 12) * 12;
+			unsigned bytes = i - startOfIntChunk + 1;
+			unsigned bytes12 = i - startOf12ByteChunk + 1;
 			bigBuffer = 0;
-			memcpy(&bigBuffer, packet->payload + startOfChunk, bytes);
+			memcpy(&bigBuffer, packet->payload + startOfIntChunk, bytes);
 			bigBuffer = htonl(bigBuffer);
-			memcpy(sendBuffer + startOfChunk % PAYLOAD_CHUNK_SIZE, &bigBuffer, 4);
+			memcpy(sendBuffer + startOfIntChunk % PAYLOAD_CHUNK_SIZE, &bigBuffer, 4);
 			if ((i % PAYLOAD_CHUNK_SIZE) == PAYLOAD_CHUNK_SIZE - 1 || i == header.messageLength - 1)
 			{
-				if (send(socket, sendBuffer, PAYLOAD_CHUNK_SIZE, 0) < 0)
+				if (send(socket, sendBuffer, bytes12, 0) < 0)
 				{
 					return -1;
 				}
